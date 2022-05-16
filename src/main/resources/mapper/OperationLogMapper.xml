@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.log.OperationLog.OperationLogMapper">
+
+    <resultMap id="OperationLogWithMap" type="com.springSecurity.entity.OperationLog">
+        <id column="id" property="id"></id>
+        <result column="operation" property="operation"></result>
+        <result column="name" property="name"></result>
+        <result column="time" property="time"></result>
+        <result column="created" property="created"></result>
+        <result column="ip" property="ip"></result>
+    </resultMap>
+
+
+    <select id="getAll" resultMap="OperationLogWithMap">
+        select
+        ol.*
+        from
+        operation_log ol
+        <where>
+            <if test="name!=null">
+
+                ol.name LIKE CONCAT('%',#{name},'%')
+
+            </if>
+
+
+            <if test="ip!=null">
+
+                AND ol.ip LIKE CONCAT('%',#{ip},'%')
+
+            </if>
+
+
+
+
+
+        </where>
+    </select>
+
+    <insert id="insert" parameterType="com.springSecurity.entity.OperationLog">
+
+
+        insert into operation_log(name,operation,ip,created)values(#{name},#{operation},#{ip},#{created})
+
+
+    </insert>
+
+
+    <delete id="deleteIds" parameterType="map">
+
+        delete
+        ol.*
+        from operation_log ol
+        <where>
+            <if test="ids!=null">
+
+                ol.id in
+                <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            </if>
+        </where>
+
+
+    </delete>
+
+
+
+
+</mapper>

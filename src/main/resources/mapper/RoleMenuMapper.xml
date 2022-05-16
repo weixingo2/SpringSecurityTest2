@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.RoleMenu.RoleMenuMapper">
+
+    <resultMap id="RoleMenuMap" type="com.springSecurity.entity.RoleMenu">
+
+        <id column="id" property="id"></id>
+
+        <result column="roleId" property="roleId"></result>
+
+        <result column="menuId" property="menuId"></result>
+    </resultMap>
+
+
+
+
+
+   <delete id="deleteIds" parameterType="Integer">
+
+       delete
+       rm.*
+       from
+       sys_role_menu rm
+       where
+       <if test="list!=null">
+           rm.roleId in
+           <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+               #{item}
+           </foreach>
+       </if>
+
+   </delete>
+
+
+    <insert id="insert" parameterType="Integer">
+        insert into sys_role_menu(roleId,menuId)values(#{roleId},#{menuId})
+    </insert>
+
+
+    <delete id="removeRoleMenu" parameterType="Integer">
+
+        delete
+        rm.*
+        from
+        sys_role_menu rm
+        where
+        rm.menuId=#{id}
+    </delete>
+
+
+    <select id="getAll" resultMap="RoleMenuMap">
+        select rm.* from sys_role_menu rm where rm.roleId=#{id}
+    </select>
+
+
+</mapper>

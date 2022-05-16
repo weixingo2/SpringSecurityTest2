@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.product.productOrder.ProductOrderMapper">
+
+    <resultMap id="ProductOrderWithMap" type="com.springSecurity.entity.ProductOrder">
+
+        <id column="id" property="id"></id>
+        <result column="userId" property="userId"></result>
+        <result column="untitled" property="untitled"></result>
+        <result column="receiverName" property="receiverName"></result>
+        <result column="receiverMobile" property="receiverMobile"></result>
+
+        <result column="receiverAddress" property="receiverAddress"></result>
+        <result column="total" property="total"></result>
+
+        <result column="actualAmount" property="actualAmount"></result>
+        <result column="payType" property="payType"></result>
+
+
+        <result column="orderMark" property="orderMark"></result>
+        <result column="statu" property="statu"></result>
+
+        <result column="deliveryType" property="deliveryType"></result>
+        <result column="deliveryFlowId" property="deliveryFlowId"></result>
+
+
+        <result column="deleteStatu" property="deleteStatu"></result>
+        <result column="created" property="created"></result>
+
+        <result column="updated" property="updated"></result>
+        <result column="payTime" property="payTime"></result>
+
+
+        <result column="deliveryTime" property="deliveryTime"></result>
+        <result column="flushTime" property="flushTime"></result>
+
+        <result column="cancelTime" property="cancelTime"></result>
+        <result column="closeType" property="closeType"></result>
+
+
+    </resultMap>
+
+
+
+    <select id="getAll1" resultMap="ProductOrderWithMap">
+
+        select
+        po.*
+        from
+        product_order
+        po
+        <where>
+            <if test="receiverName!=null">
+                AND po.receiverName LIKE CONCAT('%',#{receiverName},'%')
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="insert" parameterType="com.springSecurity.entity.ProductOrder">
+
+        insert into product_order(id,userId,receiverName,receiverAddress,receiverMobile,total,payType,payTime)values
+                                    (#{id},#{userId},#{receiverName},#{receiverAddress},#{receiverMobile},#{total},#{payType},#{payTime})
+
+    </insert>
+
+
+
+
+
+</mapper>

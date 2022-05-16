@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.product.productParams.ProductParamsMapper">
+
+    <resultMap id="ProductParamsWithMap" type="com.springSecurity.entity.ProductParams">
+
+        <id column="id" property="id"></id>
+        <result column="productId" property="productId"></result>
+        <result column="productPlace" property="productPlace"></result>
+        <result column="footPeriod" property="footPeriod"></result>
+        <result column="brand" property="brand"></result>
+        <result column="factoryName" property="factoryName"></result>
+        <result column="factoryAddress" property="factoryAddress"></result>
+        <result column="packingMethod" property="packingMethod"></result>
+        <result column="weight" property="weight"></result>
+
+        <result column="storageMethod" property="storageMethod"></result>
+        <result column="created" property="created"></result>
+        <result column="updated" property="updated"></result>
+    </resultMap>
+
+
+    <select id="getProductParam" resultType="com.springSecurity.entity.ProductParams">
+
+        select
+        pp.*
+        from
+        product_params pp
+        where
+        pp.productId=#{id}
+    </select>
+
+    <insert id="insert" parameterType="com.springSecurity.entity.ProductParams">
+
+        insert into product_params(productId,productPlace,brand,factoryName,factoryAddress,weight,created)values
+                                  (#{productId},#{productPlace},#{brand},#{factoryName},#{factoryAddress},#{weight},#{created})
+
+    </insert>
+
+
+    <delete id="deleteIds" parameterType="Integer">
+        delete
+        pp.*
+        from
+        product_params pp
+        <where>
+            <if test="proIds!=null">
+
+                pp.productId in
+
+                <foreach collection="proIds" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            </if>
+        </where>
+    </delete>
+
+
+
+</mapper>

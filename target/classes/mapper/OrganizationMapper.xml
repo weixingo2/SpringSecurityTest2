@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.organization.OrganizationMapper">
+
+    <resultMap id="OrganizationWithMap" type="com.springSecurity.entity.Organization">
+        <id column="id" property="id"></id>
+        <result column="phone" property="phone"></result>
+        <result column="organizationName" property="organizationName"></result>
+        <result column="OrganizationNum" property="OrganizationNum"></result>
+        <result column="created" property="created"></result>
+        <result column="updated" property="updated"></result>
+        <result column="statu" property="statu"></result>
+
+        <result column="page" property="page"></result>
+        <result column="count" property="count"></result>
+
+    </resultMap>
+
+
+
+    <resultMap id="orgEchartWithMap" type="com.springSecurity.dto.OrgDto">
+        <id property="id" column="id"></id>
+        <result property="count" column="count"></result>
+        <result column="orgName" property="orgName"></result>
+    </resultMap>
+
+    <select id="getAll" resultMap="OrganizationWithMap">
+        select
+         o.*
+        from
+        organization o
+        <where>
+            <if test="organizationName!=null">
+              o.organizationName LIKE CONCAT('%',#{organizationName},'%')
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="com.springSecurity.entity.Organization">
+        insert into organization(phone,organizationName,organizationNum,created,statu)values
+                                (#{phone},#{organizationName},#{organizationNum},#{created},#{statu})
+<!--        organization o-->
+<!--        set-->
+<!--        o.phone=#{phone},-->
+<!--        o.organizationName=#{organizationName},-->
+<!--        o.created=#{created},-->
+<!--        o.organizationNum=#{organizationNum}-->
+    </insert>
+
+
+    <update id="update" parameterType="com.springSecurity.entity.Organization">
+
+        update organization o
+        set
+        o.phone=#{phone},
+        o.organizationName=#{organizationName},
+        o.updated=#{updated},
+        o.organizationNum=#{organizationNum},
+        o.statu=#{statu}
+        where o.id=#{id}
+    </update>
+
+    <select id="getEchart" resultMap="orgEchartWithMap">
+        select count(*) as count,o.organizationName as orgName from organization o group by o.organizationName
+    </select>
+
+    <select id="getOrg" resultMap="OrganizationWithMap">
+
+        select * from organization;
+
+    </select>
+
+
+
+</mapper>

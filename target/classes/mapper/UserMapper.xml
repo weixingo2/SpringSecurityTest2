@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.UserMapper">
+
+  <resultMap id="userMap" type="com.springSecurity.entity.User">
+
+      <id column="id" property="id"></id>
+      <result column="username" property="username"></result>
+      <result column="password" property="password"></result>
+      <result column="avatar" property="avatar"></result>
+      <result column="email" property="email"></result>
+      <result column="city" property="city"></result>
+      <result column="lastLogin" property="lastLogin"></result>
+      <result column="statu" property="statu"></result>
+      <result column="updated" property="updated"></result>
+      <result column="created" property="created"></result>
+      <result column="Lat" property="Lat"></result>
+      <result column="Lng" property="Lng"></result>
+      <result column="address" property="address"></result>
+
+      <result column="phone" property="phone"></result>
+
+
+
+      <result column="provinces" property="provinces"></result>
+
+
+
+
+
+  </resultMap>
+
+
+    <resultMap id="UserDtoMap" type="com.springSecurity.dto.UserDto">
+
+        <id property="id" column="id"></id>
+
+        <result property="count" column="count"></result>
+        <result property="created" column="created"></result>
+
+
+    </resultMap>
+
+
+    <resultMap id="UserCountDtoWithMap" type="com.springSecurity.dto.UserCountDto">
+        <id property="id" column="id"></id>
+
+        <result property="count" column="count"></result>
+        <result property="provinces" column="provinces"></result>
+
+        <result property="ranking" column="ranking"></result>
+
+
+    </resultMap>
+
+
+
+
+
+    <resultMap id="UserRoleOrganizationWithMap" type="com.springSecurity.vo.UserRoleOrganization">
+        <id column="id" property="id"></id>
+        <result column="username" property="username"></result>
+        <result column="password" property="password"></result>
+        <result column="avatar" property="avatar"></result>
+        <result column="email" property="email"></result>
+        <result column="city" property="city"></result>
+        <result column="lastLogin" property="lastLogin"></result>
+        <result column="statu" property="statu"></result>
+        <result column="updated" property="updated"></result>
+        <result column="created" property="created"></result>
+        <result column="Lat" property="Lat"></result>
+        <result column="Lng" property="Lng"></result>
+        <result column="address" property="address"></result>
+
+        <result column="name" property="name"></result>
+        <result column="remark" property="remark"></result>
+
+        <result column="organizationName" property="organizationName"></result>
+
+        <result column="phone" property="phone"></result>
+
+        <result column="orgId" property="orgId"></result>
+
+
+
+    </resultMap>
+
+
+
+
+
+
+
+
+<!--    <insert id="saveUser" parameterType="String">-->
+<!--        insert into sys_user(username,password,email,city,created,statu)values-->
+<!--                             (#{username},#{password},#{email},#{city},#{created},#{statu})-->
+<!--    </insert>-->
+
+
+
+    <delete id="deleteIds" parameterType="Integer">
+        delete
+        u.*
+        from
+        sys_user_role u
+        where
+        <if test="ids!=null">
+            u.userId in
+            <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </delete>
+
+
+    <delete id="deleteId" parameterType="map">
+        delete
+        u.*
+        from
+        sys_user u
+        where
+        <if test="listIds!=null">
+            u.id in
+            <foreach collection="listIds" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </delete>
+
+
+
+    <select id="getEchart" resultMap="UserDtoMap">
+
+        select count(*) as count,u.created as created from sys_user u group by u.created
+
+    </select>
+
+
+    <select id="getAll1" resultMap="UserRoleOrganizationWithMap">
+
+        select
+        su.*,
+        sur.roleId,
+        o.organizationName,
+        GROUP_CONCAT(sr.name) as name
+
+        from
+        sys_user su
+
+        left join sys_user_role sur
+
+        on su.id=sur.userId
+
+        left join sys_role sr
+
+        on sr.id=sur.roleId
+
+        left join organization o
+
+        on su.organizationId=o.id
+
+      <where>
+
+        <if test="username!=null">
+
+          su.username LIKE CONCAT('%',#{username},'%')
+
+        </if>
+
+        <if test="phone!=null">
+
+            AND su.phone LIKE CONCAT('%',#{phone},'%')
+
+        </if>
+
+          <if test="provinces!=null">
+
+              AND su.provinces LIKE CONCAT('%',#{provinces},'%')
+
+          </if>
+
+        <if test="email!=null">
+
+            AND su.email LIKE CONCAT('%',#{email},'%')
+
+        </if>
+
+        <if test="name!=null">
+
+            AND sr.name LIKE CONCAT('%',#{name},'%')
+
+        </if>
+
+
+        <if test="organizationName!=null">
+
+            AND o.organizationName LIKE CONCAT('%',#{organizationName},'%')
+
+        </if>
+
+      </where>
+        group by su.id
+
+    </select>
+
+
+
+    <select id="getCount" resultMap="UserCountDtoWithMap">
+
+        select
+
+        count(*) as value,
+        su.provinces as name
+        from
+
+        sys_user su
+
+        group by su.provinces
+
+
+
+    </select>
+
+
+
+
+
+
+
+</mapper>

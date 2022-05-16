@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.product.productImg.ProductImgMapper">
+
+    <resultMap id="ProductImgWithMap" type="com.springSecurity.entity.ProductImg">
+
+        <id column="id" property="id"></id>
+        <result column="productId" property="productId"></result>
+        <result column="url" property="url"></result>
+        <result column="sort" property="sort"></result>
+        <result column="isMain" property="isMain"></result>
+
+        <result column="created" property="created"></result>
+        <result column="updated" property="updated"></result>
+
+    </resultMap>
+
+
+   <insert id="insert" parameterType="com.springSecurity.entity.ProductImg">
+
+       insert into product_img(productId,url,created)values(#{productId},#{url},#{created})
+
+   </insert>
+
+
+    <delete id="deleteIds" parameterType="Integer">
+
+        delete
+        pi.*
+        from
+        product_img pi
+        <where>
+            <if test="proIds!=null">
+
+                pi.productId in
+
+                <foreach collection="proIds" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            </if>
+        </where>
+
+    </delete>
+
+
+
+
+</mapper>

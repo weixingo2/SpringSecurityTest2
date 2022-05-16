@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.log.UserLog.UserLogMapper">
+
+    <resultMap id="UserLogWithMap" type="com.springSecurity.entity.UserLog">
+        <id column="id" property="id"></id>
+        <result column="loginUser" property="loginUser"></result>
+        <result column="ip" property="ip"></result>
+        <result column="created" property="created"></result>
+        <result column="lastTime" property="lastTime"></result>
+
+        <result column="system" property="system"></result>
+        <result column="browserName" property="browserName"></result>
+        <result column="name" property="name"></result>
+
+    </resultMap>
+
+    <resultMap id="UserDtoWithMap" type="com.springSecurity.dto.UserDto">
+        <id property="id" column="id"></id>
+        <result column="count" property="count"></result>
+        <result column="created" property="created"></result>
+    </resultMap>
+
+
+    <select id="getLogs" resultMap="UserLogWithMap">
+        select
+        ul.*
+        from
+        user_log ul
+        <where>
+            <if test="loginUser!=null">
+
+                ul.loginUser LIKE CONCAT('%',#{loginUser},'%')
+
+            </if>
+
+
+            <if test="ip!=null">
+
+                AND ul.ip LIKE CONCAT('%',#{ip},'%')
+
+            </if>
+
+            <if test="system!=null">
+
+                AND ul.system LIKE CONCAT('%',#{system},'%')
+
+            </if>
+
+
+            <if test="browserName!=null">
+
+                AND ul.browserName LIKE CONCAT('%',#{browserName},'%')
+
+            </if>
+
+        </where>
+    </select>
+
+
+    <insert id="insert" parameterType="com.springSecurity.entity.UserLog">
+
+        insert into user_log(loginUser,ip,created,system,browserName,name)values
+                            (#{loginUser},#{ip},#{created},#{system},#{browserName},#{name})
+
+    </insert>
+
+
+    <delete id="deleteIds" parameterType="map">
+
+        delete
+        ul.*
+        from user_log ul
+        <where>
+            <if test="ids!=null">
+
+                ul.id in
+                <foreach collection="ids" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            </if>
+        </where>
+
+
+    </delete>
+
+    <select id="getAll" resultMap="UserDtoWithMap">
+
+        select
+        count(*) as count,
+        ul.created as created
+        from
+        user_log ul
+        <where>
+            <if test="created!=null">
+
+                ul.created=#{created}
+
+            </if>
+
+            group by ul.created
+        </where>
+
+    </select>
+
+
+
+
+</mapper>

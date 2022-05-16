@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.product.product.ProductMapper">
+
+    <resultMap id="ProductWithMap" type="com.springSecurity.entity.Product">
+
+        <id column="id" property="id"></id>
+        <result column="productName" property="productName"></result>
+        <result column="categoryId" property="categoryId"></result>
+        <result column="rootCategoryId" property="rootCategoryId"></result>
+        <result column="soldNum" property="soldNum"></result>
+        <result column="productStatus" property="productStatus"></result>
+        <result column="content" property="content"></result>
+        <result column="created" property="created"></result>
+        <result column="updated" property="updated"></result>
+    </resultMap>
+
+    <resultMap id="ProductDtoWithMap" type="com.springSecurity.dto.ProductDto">
+
+        <id column="id" property="id"></id>
+
+        <result column="url" property="url"></result>
+        <result column="weight" property="weight"></result>
+        <result column="originalPrice" property="originalPrice"></result>
+        <result column="stock" property="stock"></result>
+
+    </resultMap>
+
+
+
+
+    <select id="getPage" resultMap="ProductDtoWithMap">
+
+        select
+        p.*,
+        pi.url,
+        pp.weight,
+        ps.originalPrice,
+        ps.stock
+        from
+        product p
+        left join
+        product_img pi
+        on pi.productId=p.id
+        left join
+        product_params pp
+        on pp.productId=p.id
+        left join
+        product_sku ps
+        on ps.productId=p.id
+        <where>
+            <if test="productName!=null">
+
+
+                AND  p.productName LIKE CONCAT('%',#{productName},'%')
+
+            </if>
+        </where>
+
+    </select>
+
+
+
+    <select id="getByCategoryId" resultType="com.springSecurity.entity.Product">
+
+        select
+        p.*
+        from
+        product p
+        where p.categoryId=#{id}
+
+    </select>
+
+
+    <select id="getByCategoryId2" resultType="com.springSecurity.entity.Product">
+
+        select
+        p.*
+        from
+        product p
+        where p.categoryId=#{id}
+        group by p.categoryId
+
+    </select>
+
+
+    <select id="getByCategoryId1" resultMap="ProductWithMap">
+
+        select
+        p.*
+        from
+        product p
+        where p.categoryId=#{id}
+
+    </select>
+
+
+    <insert id="insert" parameterType="com.springSecurity.entity.Product">
+
+        insert into product(productName,categoryId,rootCategoryId,created,content)values
+                           (#{productName},#{categoryId},#{rootCategoryId},#{created},#{content})
+
+    </insert>
+
+
+    <delete id="deletes" parameterType="Integer">
+
+        delete
+        p.*
+        from
+        product p
+        <where>
+            <if test="proIds!=null">
+
+                p.id in
+
+                <foreach collection="proIds" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            </if>
+        </where>
+
+    </delete>
+
+    <select id="getById" resultType="com.springSecurity.entity.Product">
+
+        select
+        p.*
+        from
+        product p
+        where
+        p.id=#{id}
+
+    </select>
+
+
+</mapper>

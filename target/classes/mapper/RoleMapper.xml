@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.role.RoleMapper">
+
+    <resultMap id="RoleMap" type="com.springSecurity.entity.Role">
+        <id column="id" property="id"></id>
+        <result column="name" property="name"></result>
+        <result column="code" property="code"></result>
+        <result column="remark" property="remark"></result>
+        <result column="created" property="created"></result>
+        <result column="updated" property="updated"></result>
+        <result column="statu" property="statu"></result>
+    </resultMap>
+
+      <select id="getAllRole" resultMap="RoleMap">
+
+           SELECT
+           	*
+           FROM
+           	sys_role
+           WHERE
+           	id IN ( SELECT roleId FROM sys_user_role WHERE userId = #{userId} );
+
+      </select>
+
+    <insert id="saveRole" parameterType="com.springSecurity.entity.Role">
+
+        insert into sys_role(name,code,remark,created,statu)values
+                      (#{name},#{code},#{remark},#{created},#{statu})
+
+    </insert>
+
+    <update id="updateRole" parameterType="com.springSecurity.entity.Role">
+
+        update
+        sys_role sr
+        set
+        sr.name=#{name},
+        sr.code=#{code},
+        sr.remark=#{remark},
+        sr.created=#{created},
+        sr.statu=#{statu}
+        where
+        sr.id=#{id}
+
+    </update>
+
+    <delete id="deleteRoles" parameterType="map">
+
+        delete
+       r.*
+        from
+        sys_role r
+        where
+        <if test="list!=null">
+
+            r.id in
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+
+        </if>
+
+    </delete>
+
+
+
+    <select id="getListPage1" resultMap="RoleMap">
+
+        select
+        sr.*
+        from sys_role sr
+       <where>
+        <if test="name!=null">
+
+           sr.name LIKE CONCAT('%',#{name},'%')
+
+        </if>
+       </where>
+    </select>
+
+
+
+
+
+</mapper>

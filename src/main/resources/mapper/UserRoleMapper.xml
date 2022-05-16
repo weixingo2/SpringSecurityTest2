@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.UserRole.UserRoleMapper">
+
+
+    <delete id="deleteIds" parameterType="Integer">
+
+        delete
+        ur.*
+        from
+        sys_user_role ur
+        where
+        <if test="list!=null">
+            ur.roleId in
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+    </delete>
+
+
+    <delete id="deleteUserIds" parameterType="Integer">
+
+        delete
+        ur.*
+        from
+        sys_user_role ur
+        where
+        <if test="list!=null">
+            ur.userId in
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+    </delete>
+
+    <insert id="save" parameterType="com.springSecurity.entity.UserRole">
+
+        insert into sys_user_role(userId,roleId)values(#{userId},#{roleId})
+    </insert>
+
+
+    <delete id="delete" parameterType="map">
+
+        delete
+        ur.*
+        from
+        sys_user_role ur
+        where
+        <if test="listIds!=null">
+
+            ur.userId in
+            <foreach collection="listIds" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+
+        </if>
+
+    </delete>
+
+
+</mapper>

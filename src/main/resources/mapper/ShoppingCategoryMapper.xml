@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.product.ShopingSliders.ShopingSlidersMapper">
+
+    <resultMap id="ShoopingCategoryWithMap" type="com.springSecurity.entity.ShoopingCategory">
+
+        <id column="id" property="id"></id>
+        <result column="parentId" property="parentId"></result>
+        <result column="level" property="level"></result>
+        <result column="cateGoryName" property="cateGoryName"></result>
+        <result column="url" property="url"></result>
+        <result column="recuritmentName" property="recuritmentName"></result>
+        <result column="monthPin" property="monthPin"></result>
+        <result column="price" property="price"></result>
+        <result column="personNum" property="personNum"></result>
+        <result column="title" property="title"></result>
+
+        <result column="shoppingName" property="shoppingName"></result>
+
+
+    </resultMap>
+
+
+    <select id="getCategoryList" resultMap="ShoopingCategoryWithMap">
+
+        select
+        sc.*
+        from
+        shopping_category sc
+        left join shopping_recruitment sr
+        on sr.id=sc.shoppingReId
+        where
+        sc.shoppingName=#{recruitmentName}
+    </select>
+
+
+</mapper>

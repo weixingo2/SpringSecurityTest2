@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.product.productSku.ProductSkuMapper">
+
+    <resultMap id="ProductSkuWithMap" type="com.springSecurity.entity.ProductSku">
+
+        <id column="id" property="id"></id>
+        <result column="productId" property="productId"></result>
+        <result column="skuName" property="skuName"></result>
+        <result column="skuPic" property="skuPic"></result>
+        <result column="untitled" property="untitled"></result>
+        <result column="originalPrice" property="originalPrice"></result>
+        <result column="discounts" property="discounts"></result>
+        <result column="stock" property="stock"></result>
+        <result column="created" property="created"></result>
+
+        <result column="updated" property="updated"></result>
+        <result column="status" property="status"></result>
+    </resultMap>
+
+
+    <select id="getByProductId" resultType="com.springSecurity.entity.ProductSku">
+
+        select
+        ps.*
+        from
+        product_sku ps
+        where ps.productId=#{id}
+
+
+    </select>
+
+
+    <insert id="insert" parameterType="com.springSecurity.entity.ProductSku">
+
+        insert into product_sku(productId,untitled,originalPrice,stock,created)values
+                               (#{productId},#{untitled},#{originalPrice},#{stock},#{created})
+
+    </insert>
+
+    <delete id="deleteIds" parameterType="Integer">
+
+        delete
+        ps.*
+        from
+        product_sku ps
+        <where>
+            <if test="proIds!=null">
+
+                ps.productId in
+
+                <foreach collection="proIds" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            </if>
+        </where>
+
+    </delete>
+
+    <update id="update" parameterType="com.springSecurity.entity.ProductSku">
+
+        update
+        product_sku ps
+        set
+        ps.stock=#{stock},
+        ps.updated=#{updated}
+        where
+        ps.id=#{id}
+
+    </update>
+
+
+    <select id="getSkuId" resultType="com.springSecurity.entity.ProductSku">
+
+        select
+        ps.*
+        from
+        product_sku
+        ps
+        where
+        ps.id=#{id}
+
+    </select>
+
+
+
+
+</mapper>

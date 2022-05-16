@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springSecurity.mapper.product.productItem.ProductItemMapper">
+
+    <resultMap id="ProductWithMap" type="com.springSecurity.entity.ProductItem">
+
+        <id column="id" property="id"></id>
+        <result column="orderId" property="orderId"></result>
+        <result column="productId" property="productId"></result>
+        <result column="productName" property="productName"></result>
+        <result column="productImg" property="productImg"></result>
+        <result column="skuId" property="skuId"></result>
+        <result column="skuName" property="skuName"></result>
+        <result column="productPrice" property="productPrice"></result>
+        <result column="buyNum" property="buyNum"></result>
+
+        <result column="totalAmount" property="totalAmount"></result>
+
+        <result column="basketDate" property="basketDate"></result>
+
+        <result column="buyTime" property="buyTime"></result>
+
+        <result column="isComment" property="isComment"></result>
+
+    </resultMap>
+
+
+    <resultMap id="ProductItemDtoWithMap" type="com.springSecurity.dto.ProductItemDto">
+
+        <id column="id" property="id"></id>
+        <result property="count" column="count"></result>
+        <result property="productName" column="productName"></result>
+
+    </resultMap>
+
+    <insert id="insert" parameterType="com.springSecurity.entity.ProductItem">
+
+        insert into order_item(orderId,productId,productName,productImg,skuId,productPrice,buyNum)values
+                          (#{orderId},#{productId},#{productName},#{productImg},#{skuId},#{productPrice},#{buyNum})
+
+    </insert>
+
+    <select id="getAll1" resultMap="ProductItemDtoWithMap">
+
+
+        select
+        sum(oi.buyNum) as count,
+        oi.productName as productName
+        from
+        order_item oi
+
+        <where>
+            <if test="productName!=null">
+                oi.productName LIKE CONCAT('%',#{productName},'%')
+            </if>
+        </where>
+
+        group by oi.productName
+    </select>
+
+
+    <delete id="deletes" parameterType="String">
+
+        delete
+        oi.*
+        from
+        order_item oi
+        <where>
+            <if test="proIds!=null">
+
+                oi.productName in
+
+                <foreach collection="proIds" item="item" index="index" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+
+            </if>
+        </where>
+
+    </delete>
+
+
+</mapper>

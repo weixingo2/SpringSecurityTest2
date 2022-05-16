@@ -1,0 +1,143 @@
+Server:
+  port: 9080
+
+spring:
+  mail:
+    host: smtp.qq.com
+#    username: a14754598576@163.com
+    username: 1309463811@qq.com
+    password: ovliggjlekbcghhj
+#    password: EAAXLDCKNPMFKNAO
+    properties:
+      main:
+        smtp:
+          ssl:
+            enable: true
+
+  security:
+    basic:
+      enabled: false
+    user:
+      name: user
+      password: 111111
+  management:
+    security:
+      enabled: false
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 5000
+
+  rabbitmq:
+    host: 175.178.14.238
+    port: 5672
+    username: admin
+    password: admin
+    # 消息确认（ACK）
+    publisher-confirm-type: correlated #确认消息已发送到交换机(Exchange)
+    publisher-returns: true #确认消息已发送到队列(Queue)
+
+
+    listener:
+      concurrency: 5
+      max-concurrency: 10
+      prefetch: 1
+      transaction-size: 1
+
+  jackson:
+   date-format: yyyy-MM-dd HH:mm:ss
+   date-format-exact: yyyy-MM-dd HH:mm:ss SSS
+   time-zone: GMT+8
+
+  datasource:
+    # 使用mysql 打开23-28行注释， 删除29-36行
+    name: sip
+    url: jdbc:mysql://175.178.14.238:3306/ceshi666
+    username: ceshi666
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml
+
+fdfs:
+  so-timeout: 1501
+  connect-timeout: 601
+  thumb-image:             #缩略图生成参数
+    width: 150
+    height: 150
+  tracker-list:            #TrackerList参数,支持多个
+    - 175.178.14.238:22122
+  pool:
+    max-total: 50
+
+upload:
+  base-url: http://175.178.14.238:8809/
+  allow-types:
+    - image/jpeg
+    - image/png
+    - image/bmp
+    - image/gif
+
+tencent:
+  cos:
+    app-id: 1307396532
+    secret-id: AKIDMUMxHK6aolRpxoNfgRv84k9H8i12mFQK
+    secret-key: e17vTjjRs1tTmoZ4IFvLUMxHK6ankPnt
+    bucket-name: imgbucket-1307396532
+    region-id: ap-guangzhou
+    base-url: https://imgbucket-1307396532.cos.ap-guangzhou.myqcloud.com
+
+
+management:
+  security:
+    enabled: false
+#log4j:
+#  .rootLogger: INFO,console
+#  .logger:
+#    .com:
+#      .forezp: DEBUG, socket
+#  .appender:
+#    .socket: org.apache.log4j.net.SocketAppender
+#     .Port: 4560
+#     .RemoteHost: localhost
+#     .layout: org.apache.log4j.PatternLayout
+#     .ConversionPattern: %d [%-5p] [%l] %m%n
+#     .ReconnectionDelay: 10000
+#    .console: org.apache.log4j.ConsoleAppender
+#     .target: System.out
+#     .layout: org.apache.log4j.PatternLayout
+#     .ConversionPattern: %d [%-5p] [%l] %m%n
+
+#mq:
+#  env: test
+#
+#register:
+#  exchange:
+#    name: ${mq.env}.user.register.exchange
+#
+#  delay:
+#    queue:
+#      name: ${mq.env}.user.register.delay.queue
+#
+#  queue:
+#    name: ${mq.env}.user.register.queue
+#
+#  delay1:
+#    exchange:
+#      name: ${mq.env}.user.register.delay.exchange
+#
+##交易记录失效时间：10s
+#trade.record.ttl: 10000
+
+chensensong:
+  jwt:
+    header: Authroization
+    secret: asdfghjklzxcvbnmqwertyuioplkjhgf
+    expire: 604800
+
+
+
+
+
