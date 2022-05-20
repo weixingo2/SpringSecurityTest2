@@ -2,11 +2,11 @@ Server:
   port: 9080
 
 spring:
-  mail:
+  mail:                   #meyoswaaprrbfhhb
     host: smtp.qq.com
 #    username: a14754598576@163.com
     username: 1309463811@qq.com
-    password: ovliggjlekbcghhj
+    password: meyoswaaprrbfhhb  #uygexpstkiwygeei
 #    password: EAAXLDCKNPMFKNAO
     properties:
       main:
@@ -36,9 +36,13 @@ spring:
     # 消息确认（ACK）
     publisher-confirm-type: correlated #确认消息已发送到交换机(Exchange)
     publisher-returns: true #确认消息已发送到队列(Queue)
-
-
+    publisher-confirms: true
     listener:
+      simple:
+        acknowledge-mode=manual: true
+        prefetch: 100
+
+
       concurrency: 5
       max-concurrency: 10
       prefetch: 1
